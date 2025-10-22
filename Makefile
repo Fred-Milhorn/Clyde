@@ -20,11 +20,11 @@ PROFILES           ?=
 all: prod
 
 define GEN_BIN_RULES
-$$(BUILD)/$$(call up,$(1))-$$(p): $$($(call up,$(1))_MLB_$(p)) | $$(BUILD)
+$$(BUILD)/$$($(call up,$(1))_OUT_NAME)-$$(p): $$($(call up,$(1))_MLB_$(p)) | $$(BUILD)
 	$$(MLTON) $$(MLTON_COMMON_FLAGS) $$(if $$(filter dev,$(p)),$$(MLTON_DEV_FLAGS),$$(if $$(filter prod,$(p)),$$(MLTON_PROD_FLAGS),)) -output $$@ $$<
 
-.PHONY: $(1)-$(p)
-$(1)-$(p): $$(BUILD)/$$(call up,$(1))-$$(p)
+.PHONY: $($(call up,$(1))_OUT_NAME)-$(p)
+$($(call up,$(1))_OUT_NAME)-$(p): $$(BUILD)/$$($(call up,$(1))_OUT_NAME)-$$(p)
 	@true
 endef
 
@@ -32,6 +32,7 @@ $(BUILD):
 	@mkdir -p $(BUILD)
 
 up = $(shell echo $(1) | tr a-z A-Z | tr - _)
+out = $($(call up,$(1))_OUT_NAME)
 
 $(foreach b,$(BINS),\
   $(eval PROFILE_LIST_$b := $($(call up,$(b))_PROFILES)) \
@@ -40,17 +41,18 @@ $(foreach b,$(BINS),\
   )\
 )
 
-dev: $(foreach b,$(BINS),$(b)-dev)
-prod: $(foreach b,$(BINS),$(b)-prod)
+dev: $(foreach b,$(BINS),$(call out,$(b))-dev)
+prod: $(foreach b,$(BINS),$(call out,$(b))-prod)
 
 BIN ?= $(word 1,$(BINS))
+BIN_OUT ?= $(call out,$(BIN))
 PROFILE ?= prod
-run: $(BUILD)/$(BIN)-$(PROFILE)
+run: $(BUILD)/$(BIN_OUT)-$(PROFILE)
 	$< $(ARGS)
 
-test: $(foreach b,$(BINS),$(b)-test)
+test: $(foreach b,$(BINS),$(call out,$(b))-test)
 	@set -e; \
-	for exe in $(foreach b,$(BINS),$(BUILD)/$(call up,$(b))-test); do \
+	for exe in $(foreach b,$(BINS),$(BUILD)/$(call out,$(b))-test); do \
 		"$$exe"; \
 	done
 
@@ -60,5 +62,5 @@ clean:
 help:
 	@echo "Targets:"
 	@echo "  make dev|prod"
-	@echo "  make <bin>-<profile>"
-	@echo "  make run BIN=cli PROFILE=dev ARGS='--help'"
+	@echo "  make clide-dev|clide-prod|clide-test"
+	@echo "  make run BIN=$(word 1,$(BINS)) PROFILE=dev ARGS='--help'"

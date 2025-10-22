@@ -4,15 +4,15 @@ version = "0.1.4"
 
 [tool.mlton]
 common_flags = []
-dev_flags = []
+dev_flags = ["-const", "'Exn.keepHistory true'"]
 prod_flags = []
 
 [[bin]]
 name = "clide-demo"
-out_name = "clide-demo"
+out_name = "clide"
 
 [mlb.clide-demo]
-base = "mlb/clide-demo-base.mlb"
-dev = "mlb/clide-demo-dev.mlb"
-prod = "mlb/clide-demo-prod.mlb"
-test = "mlb/clide-demo-test.mlb"
+base = "mlb/clide-base.mlb"
+dev = "mlb/clide-dev.mlb"
+prod = "mlb/clide-prod.mlb"
+test = "mlb/clide-test.mlb"
