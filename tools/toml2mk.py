@@ -22,7 +22,9 @@ def main():
     tool_mlton = data.get("tool", {}).get("mlton", {})
     common_flags = tool_mlton.get("common_flags", [])
     dev_flags = tool_mlton.get("dev_flags", [])
+    test_flags = tool_mlton.get("test_flags", [])
     prod_flags = tool_mlton.get("prod_flags", [])
+    test_flags = tool_mlton.get("test_flags", [])
 
     bin_names = [b["name"] for b in bins]
     profiles_by_bin = {}
@@ -36,6 +38,7 @@ def main():
     print(f'BINS := {" ".join(bin_names)}')
     print(f'MLTON_COMMON_FLAGS := {shjoin(common_flags)}')
     print(f'MLTON_DEV_FLAGS := {shjoin(dev_flags)}')
+    print(f'MLTON_TEST_FLAGS := {shjoin(test_flags)}')
     print(f'MLTON_PROD_FLAGS := {shjoin(prod_flags)}')
     all_profiles = sorted({p for b in bin_names for p in profiles_by_bin[b]})
     print(f'PROFILES := {" ".join(all_profiles)}')

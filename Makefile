@@ -12,6 +12,7 @@ $(VARSMK): Project.toml tools/toml2mk.py
 MLTON_COMMON_FLAGS ?=
 MLTON_DEV_FLAGS    ?=
 MLTON_PROD_FLAGS   ?=
+MLTON_TEST_FLAGS   ?=
 BINS               ?=
 PROFILES           ?=
 
@@ -21,7 +22,7 @@ all: prod
 
 define GEN_BIN_RULES
 $$(BUILD)/$$($(call up,$(1))_OUT_NAME)-$$(p): $$($(call up,$(1))_MLB_$(p)) | $$(BUILD)
-	$$(MLTON) $$(MLTON_COMMON_FLAGS) $$(if $$(filter dev,$(p)),$$(MLTON_DEV_FLAGS),$$(if $$(filter prod,$(p)),$$(MLTON_PROD_FLAGS),)) -output $$@ $$<
+	$$(MLTON) $$(MLTON_COMMON_FLAGS) $$(if $$(filter dev,$(p)),$$(MLTON_DEV_FLAGS),) $$(if $$(filter prod,$(p)),$$(MLTON_PROD_FLAGS),) $$(if $$(filter test,$(p)),$$(MLTON_TEST_FLAGS),) -output $$@ $$<
 
 .PHONY: $($(call up,$(1))_OUT_NAME)-$(p)
 $($(call up,$(1))_OUT_NAME)-$(p): $$(BUILD)/$$($(call up,$(1))_OUT_NAME)-$$(p)

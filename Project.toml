@@ -5,6 +5,7 @@ version = "0.1.4"
 [tool.mlton]
 common_flags = []
 dev_flags = ["-const", "'Exn.keepHistory true'"]
+test_flags = ["-const", "'Exn.keepHistory true'"]
 prod_flags = []
 
 [[bin]]
