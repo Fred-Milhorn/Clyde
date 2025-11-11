@@ -26,4 +26,4 @@ Version: v0.1.0
 
 Updated help: merged short/long flags on one line; aligned doc columns. Version: v0.1.3
 
-Documentation update: added docs/USAGE.md. Version: v0.1.4
+Documentation update: usage specification is in ../../docs/specs/USAGE.md. Version: v0.1.4

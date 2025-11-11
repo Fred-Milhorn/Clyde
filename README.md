@@ -1,82 +1,75 @@
 # Clide
 
-Clide is a Standard ML library and demo application that turns annotated
-`Usage:` lines into a fully validated command-line parser. It ships with a
-self-contained build system (MLton + Make) and a lightweight test harness so you
-can experiment with CLI specification driven parsing without relying on external
-services.
+Clide is a multi-language library that turns annotated `Usage:` lines into fully validated command-line parsers. Each language implementation provides a consistent API for parsing command-line arguments based on POSIX-style usage specifications.
 
-## Rationale
+## Overview
 
-- **Specification at the edge**: CLI shape is recorded once in human-friendly
-   usage strings, then compiled to enforce flags, defaults, and positional
-   arguments at runtime.
-- **Type-aware parsing**: Options and positionals deserialize into `INT`,
-   `BOOL`, `STR`, and `PATH` values immediately, surfacing `ArgError` on bad
-   input instead of deferring validation.
-- **Embeddable library**: The parsing engine lives under `lib/clide`, sealed by
-   the `CLI_DERIVE` signature. The demo in `src/Main.sml` shows how to wire
-   `Clide.fromUsageLines` and `Clide.helpWithDocs` into an application.
+Clide provides a specification-driven approach to CLI parsing:
 
-## Usage Example
+- **Specification at the edge**: CLI shape is recorded once in human-friendly usage strings, then compiled to enforce flags, defaults, and positional arguments at runtime.
+- **Type-aware parsing**: Options and positionals deserialize into typed values (`INT`, `BOOL`, `STR`, `PATH`) immediately, surfacing errors on bad input instead of deferring validation.
+- **Consistent API**: All language implementations follow the same specification, ensuring predictable behavior across languages.
 
-```sml
-val usage = [
-   "Usage: mytool [-v|--verbose] serve [--port=INT:8080] [--tls] [--root=PATH] <dir:PATH>",
-   "Usage: mytool init <path:PATH>"
-]
+## Language Implementations
 
-val docs = [
-   ("serve", "Start the HTTP server"),
-   ("-v, --verbose", "Verbose logging")
-]
+### Standard ML (SML)
 
-val parse = Clide.fromUsageLines usage
+The original implementation in Standard ML (MLton). See [`langs/sml/README.md`](langs/sml/README.md) for details.
 
-case parse (CommandLine.arguments ()) of
-   {command = "serve", options, positionals, leftovers} =>
-      (* act on parsed values *)
-| result => (* handle other commands *)
-```
-
-Running the bundled demo binary:
-
+**Quick Start:**
 ```bash
+cd langs/sml
 make prod
-./build/CLIDE_DEMO-prod --help
+./build/clide-prod --help
 ```
 
-## Build Targets
+### Future Implementations
 
-- `make dev` – builds `build/CLIDE_DEMO-dev` using the development MLB profile.
-- `make prod` – builds the optimized production binary in `build/CLIDE_DEMO-prod`.
-- `make test` – compiles the test runner (`build/CLIDE_DEMO-test`) and executes
-   the suite in `test/`, covering parser defaults, repeatable options, error
-   surfaces, and help rendering.
-- `make run BIN=clide-demo PROFILE=dev ARGS='serve /tmp/app'` – convenience
-   target to invoke a compiled binary with arguments.
-- `make clean` – removes the `build/` directory (generated binaries and
-   `build/vars.mk`).
+Additional language implementations can be added under `langs/`:
+- `langs/rust/` - Rust implementation
+- `langs/python/` - Python implementation
+- `langs/typescript/` - TypeScript/Node.js implementation
+- etc.
+
+## Specification
+
+The core specification for Clide usage strings is documented in [`docs/specs/USAGE.md`](docs/specs/USAGE.md). This specification defines:
+
+- Usage string syntax and semantics
+- Type annotations (`INT`, `BOOL`, `STR`, `PATH`)
+- Default value syntax
+- Flag and positional argument parsing rules
+- Help text generation conventions
+
+All language implementations should conform to this specification.
 
 ## Project Layout
 
 ```text
-├── Project.toml            # Build + profile configuration
-├── Makefile                # MLton build orchestration
-├── lib/clide/              # Reusable CLI derivation library
-├── src/Main.sml            # Demo program wiring the library
-├── test/                   # Expect-based unit tests (run with make test)
-├── mlb/                    # MLton basis bundles for each profile
-├── tools/toml2mk.py        # Generates build/vars.mk from Project.toml
-└── docs/USAGE.md           # Reference for usage string semantics
+├── docs/
+│   └── specs/              # Shared specification documentation
+│       └── USAGE.md        # Usage string specification
+├── langs/                  # Language-specific implementations
+│   └── sml/                # Standard ML implementation
+│       ├── lib/clide/      # Reusable CLI derivation library
+│       ├── src/            # Demo application
+│       ├── test/           # Test suite
+│       ├── mlb/            # MLton basis bundles
+│       ├── Makefile        # Build system
+│       └── Project.toml    # Build configuration
+└── LICENSE                 # Project license
 ```
 
-## Requirements
+## Contributing
 
-- [MLton](https://mlton.org)
-- Python 3.11+ (or 3.7+ with `tomli`) for the `toml2mk.py` helper
-- POSIX `make`
+When adding a new language implementation:
+
+1. Create a new directory under `langs/` (e.g., `langs/rust/`)
+2. Implement the parser according to the specification in `docs/specs/USAGE.md`
+3. Include tests that verify conformance to the specification
+4. Add a `README.md` in the language directory explaining how to build and use it
+5. Update this README to list the new implementation
 
 ## License
 
-MIT License – see `lib/clide/LICENSE` for details.
+MIT License – see `LICENSE` for details.
