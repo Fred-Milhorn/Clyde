@@ -1,0 +1,22 @@
+[package]
+name = "clide"
+version = "0.1.4"
+edition = "2021"
+authors = ["Clide Contributors"]
+description = "Clide: Augmented POSIX Usage -> argv parser for Rust"
+license = "MIT"
+
+[[bin]]
+name = "clide-demo"
+path = "src/main.rs"
+
+[lib]
+name = "clide"
+path = "src/lib.rs"
+
+[dependencies]
+
+[[test]]
+name = "clide_tests"
+path = "tests/clide_tests.rs"
+

@@ -1,0 +1,8 @@
+local
+  $(SML_LIB)/basis/basis.mlb
+  ../lib/clide/clide.mlb
+in
+  ../test/Expect.sml
+  ../test/ClideTests.sml
+  ../test/TestMain.sml
+end
