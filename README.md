@@ -34,6 +34,16 @@ cargo build --release
 ./target/release/clide-demo --help
 ```
 
+### Python
+
+A Python implementation with the same API and behavior. See [`langs/python/README.md`](langs/python/README.md) for details.
+
+**Quick Start:**
+```bash
+cd langs/python
+python3 demo.py --help
+```
+
 ## Specification
 
 The core specification for Clide usage strings is documented in [`docs/specs/USAGE.md`](docs/specs/USAGE.md). This specification defines:
@@ -60,11 +70,17 @@ All language implementations should conform to this specification.
 │   │   ├── mlb/            # MLton basis bundles
 │   │   ├── Makefile        # Build system
 │   │   └── Project.toml    # Build configuration
-│   └── rust/               # Rust implementation
-│       ├── src/            # Library and demo source
+│   ├── rust/               # Rust implementation
+│   │   ├── src/            # Library and demo source
+│   │   ├── tests/          # Test suite
+│   │   ├── Cargo.toml      # Rust package configuration
+│   │   └── README.md       # Rust-specific documentation
+│   └── python/             # Python implementation
+│       ├── clide/          # Main package
+│       ├── demo.py         # Demo application
 │       ├── tests/          # Test suite
-│       ├── Cargo.toml      # Rust package configuration
-│       └── README.md       # Rust-specific documentation
+│       ├── pyproject.toml  # Python package configuration
+│       └── README.md       # Python-specific documentation
 └── LICENSE                 # Project license
 ```
 
