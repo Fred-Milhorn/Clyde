@@ -44,6 +44,17 @@ cd langs/python
 python3 demo.py --help
 ```
 
+### Zig
+
+A Zig implementation with the same API and behavior. See [`langs/zig/README.md`](langs/zig/README.md) for details.
+
+**Quick Start:**
+```bash
+cd langs/zig
+zig build
+./zig-out/bin/clide-demo --help
+```
+
 ## Specification
 
 The core specification for Clide usage strings is documented in [`docs/specs/USAGE.md`](docs/specs/USAGE.md). This specification defines:
@@ -75,12 +86,17 @@ All language implementations should conform to this specification.
 │   │   ├── tests/          # Test suite
 │   │   ├── Cargo.toml      # Rust package configuration
 │   │   └── README.md       # Rust-specific documentation
-│   └── python/             # Python implementation
-│       ├── clide/          # Main package
-│       ├── demo.py         # Demo application
+│   ├── python/             # Python implementation
+│   │   ├── clide/          # Main package
+│   │   ├── demo.py         # Demo application
+│   │   ├── tests/          # Test suite
+│   │   ├── pyproject.toml  # Python package configuration
+│   │   └── README.md       # Python-specific documentation
+│   └── zig/                 # Zig implementation
+│       ├── src/            # Library and demo source
 │       ├── tests/          # Test suite
-│       ├── pyproject.toml  # Python package configuration
-│       └── README.md       # Python-specific documentation
+│       ├── build.zig       # Zig build configuration
+│       └── README.md       # Zig-specific documentation
 └── LICENSE                 # Project license
 ```
 
