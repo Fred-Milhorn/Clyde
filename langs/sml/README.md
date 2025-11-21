@@ -91,7 +91,7 @@ end
 Usage in code:
 
 ```sml
-val parse = Clide.fromUsageLines usage
+val parse = Clyde.fromUsageLines usage
 val res = parse (CommandLine.arguments ())
 ```
 
